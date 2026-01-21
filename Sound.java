@@ -226,20 +226,38 @@ public class Sound {
      * reverse the sound
      */
     public void reverse() {
-
+        ArrayList<Integer> temp = new ArrayList<Integer>();
+        for(int i = myData.size() -1; i >= 0; i--){
+            temp.add(myData.get(i));
+        }
+        myData = temp;
+        refresh();
 
     }
 
     // this throws out half the data
     public void doublePitch() {
-
+        ArrayList<Integer> s = new ArrayList<Integer>((myData.size()/2));
+        for (int i=0; i < s.size() ; i++) {
+            int n = myData.get(i*2);
+            s.set(i,  n);
+        }
+        myData.clear();
+        myData.addAll(s);
+        // for(Integer i: s)
+        //     myData.add(i);
+        refresh();
     }
 
 
   
     //complete this method
     public void amplify (double amt) {
+         for(int x = 0; x<myData.size(); x++){
+            myData.set(x, (int) (myData.get(x)*amt));
 
+        }
+        refresh();
     }
 
     /*
@@ -247,7 +265,13 @@ public class Sound {
      * Used by normalize() to determine the scaling factor.
      */
     private int findAbsoluteMax() {
-  
+        int max = Math.abs(myData.get(0));
+        for(Integer d: myData){
+            if(Math.abs(d) > max){
+                max = Math.abs(d);
+            }
+        }
+        return (int)(32000/(1.0*max));
     }
 
     /*
@@ -256,7 +280,14 @@ public class Sound {
      * This makes quiet sounds louder while preventing distortion.
      */
     public void normalize() {
+         amplify(findAbsoluteMax());
+        refresh();
+    }
 
+    public void setToIndex() {
+        for(int i =0; i < 32768; i++) {
+            myData.set(i, i);
+        }
 
     }
 
@@ -268,7 +299,15 @@ public class Sound {
     // - replace the current value with the new value
     // - refresh!
     public void fadeIn(double seconds) {
-
+        int numToChange = (int)Math.round(this.getSamplingRate() * seconds);
+        double factor = 1.0/numToChange;
+        double increase = 1.0/numToChange;
+        for(int i=0; i < myData.size(); i++){
+            myData.set(i, (int)(myData.get(i) * factor));
+            if(factor < 1.0){
+                factor+=increase;
+            }
+        }
    
     }
 
