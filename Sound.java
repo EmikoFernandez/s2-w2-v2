@@ -314,6 +314,16 @@ public class Sound {
 
     // Fade out over a duration in seconds
     public void fadeOut(double seconds) {
+        int numToChange = (int)Math.round(this.getSamplingRate() * seconds);
+        double factor = 1.0/numToChange;
+        double increase = 1.0/numToChange;
+        for(int i = myData.size()-1; i > 0; i--){
+            myData.set(i, (int)(myData.get(i) * factor));
+            if(factor<1.0){
+                factor+=increase;
+            }
+        }
+
 
     }
 
@@ -324,11 +334,26 @@ public class Sound {
      */
     public void setSquare(int hertz) {
         int maxAmplitude = 25000;
+        int minAmplitude = -25000;
+        int index= 0;
         // based on hertz: cycles per second
         // cycle - is one complete wave 
         // sampleRate() -- getSamplingRate() - samples per second
         // You need to calculate the samplesPerCycle 
+        int samplesPerCycle = (int) Math.round(this.getSamplingRate()/hertz);
+        int halfCycle = samplesPerCycle / 2;
+        
+        while(index < myData.size()){
+           for (int i = 0; i < halfCycle && index < myData.size(); i++) {
+            myData.set(index++, maxAmplitude);
+        }
 
+        for (int i = 0; i < samplesPerCycle - halfCycle && index < myData.size(); i++) {
+            myData.set(index++, minAmplitude);
+            }
+        }
+        
+        
     }
 
 
