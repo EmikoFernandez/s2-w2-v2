@@ -9,7 +9,7 @@ public class SoundMain{
         v.addAction("Normalize", () -> s.normalize());
         v.addAction("Fade In (0.5s)", () -> s.fadeIn(1));
         v.addAction("Fade Out (0.5s)", () -> s.fadeOut(1));
-        v.addAction("Echo (250ms)", () -> s.echo(0.25, 0.5));
-        v.addAction("Square (440Hz)", () -> s.setSquare(440));
+        //v.addAction("Echo (250ms)", () -> s.echo(0.25, 0.5));
+        v.addAction("Square (440Hz)", () -> s.setSquare(1));
     }
 }

@@ -254,7 +254,7 @@ public class Sound {
     //complete this method
     public void amplify (double amt) {
          for(int x = 0; x<myData.size(); x++){
-            myData.set(x, (int) (myData.get(x)*amt));
+           myData.set(x,(int)(this.clampSample((int)(myData.get(x)*amt))));
 
         }
         refresh();
@@ -356,17 +356,13 @@ public class Sound {
         
     }
 
-
-
-    // Simple echo: single delayed tap mixed with the original
-    // What is echo mathically: current value + (decay * past)
-    public void echo(double delaySeconds, double decay) {
-
-    }
-
     private int clampSample(int value) {
+        if(value > Integer.MAX_VALUE)
+            value = Integer.MAX_VALUE;
+        if(value < Integer.MIN_VALUE)
+            value = Integer.MIN_VALUE;
 
-        return -1;
+        return value; 
     }
 
 
